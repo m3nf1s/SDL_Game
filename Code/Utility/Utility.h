@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 
 #include <memory>
 #include <string>
@@ -41,6 +42,28 @@ public:
 
 private:
 	std::unique_ptr<SDL_Renderer, SDLDeleter> m_renderer;
+};
+
+class SDLSurfaceWrapper
+{
+public:
+	SDLSurfaceWrapper(const std::string& path, const std::string& object_name);
+
+	SDL_Surface* Get();
+
+private:
+	std::unique_ptr<SDL_Surface, SDLDeleter> m_surface;
+};
+
+class SDLTextureWrapper
+{
+public:
+	SDLTextureWrapper(SDL_Renderer* renderer, SDL_Surface* surface, const std::string& object_name);
+
+	SDL_Texture* Get();
+
+private:
+	std::unique_ptr<SDL_Texture, SDLDeleter> m_texture;
 };
 
 void PrintDebugMessage(const std::string& message);

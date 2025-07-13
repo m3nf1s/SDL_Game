@@ -19,5 +19,8 @@ public:
 private:
     bool m_is_running;
     std::unique_ptr<SDLWindowWrapper>   m_window;
-    std::unique_ptr<SDLRendererWrapper> m_renderer;    
+    std::unique_ptr<SDLRendererWrapper> m_renderer;
+
+    std::unique_ptr<SDLTextureWrapper> m_player;
+    SDL_FRect srcR, destR;
 };

@@ -56,6 +56,16 @@ SDLRendererWrapper::SDLRendererWrapper(SDL_Window* window,
 {
 }
 
+SDLSurfaceWrapper::SDLSurfaceWrapper(const std::string& path, const std::string& object_name)
+	: m_surface(IMG_Load(path.c_str()), SDLDeleter(object_name))
+{
+}
+
+SDLTextureWrapper::SDLTextureWrapper(SDL_Renderer* renderer, SDL_Surface* surface, const std::string& object_name)
+	: m_texture(SDL_CreateTextureFromSurface(renderer, surface), SDLDeleter(object_name))
+{
+}
+
 SDL_Window* SDLWindowWrapper::Get()
 {
 	return m_window.get();
@@ -64,6 +74,16 @@ SDL_Window* SDLWindowWrapper::Get()
 SDL_Renderer* SDLRendererWrapper::Get()
 {
 	return m_renderer.get();
+}
+
+SDL_Surface* SDLSurfaceWrapper::Get()
+{
+	return m_surface.get();
+}
+
+SDL_Texture* SDLTextureWrapper::Get()
+{
+	return m_texture.get();
 }
 
 void PrintDebugMessage(const std::string& message)
