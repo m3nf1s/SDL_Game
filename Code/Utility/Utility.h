@@ -9,14 +9,11 @@ class SDLDeleter
 {
 public:
 	SDLDeleter() = delete;
-	SDLDeleter(const std::string& object_name) : m_object_name(object_name) {}
-	void operator() (SDL_Window* window) const;
-	void operator() (SDL_Renderer* renderer) const;
+	SDLDeleter(const std::string& object_name);
+	void operator()(SDL_Window* window) const;
+	void operator()(SDL_Renderer* renderer) const;
 	void operator()(SDL_Texture* texture) const;
 	void operator()(SDL_Surface* surface) const;
-
-private:
-	void ShowDestroyingDebugMessage(const std::string& object) const;
 
 private:
 	std::string m_object_name;
@@ -45,3 +42,6 @@ public:
 private:
 	std::unique_ptr<SDL_Renderer, SDLDeleter> m_renderer;
 };
+
+void PrintDebugMessage(const std::string& message);
+void PrintErrorMessage(const std::string& message);

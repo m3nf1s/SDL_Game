@@ -3,44 +3,44 @@
 #include <iostream>
 #include <format>
 
-void SDLDeleter::operator() (SDL_Window* window) const
+SDLDeleter::SDLDeleter(const std::string& object_name)
+	: m_object_name(object_name)
+{
+}
+
+void SDLDeleter::operator()(SDL_Window* window) const
 {
 	if (window)
 	{
 		SDL_DestroyWindow(window);
-		ShowDestroyingDebugMessage("Window");
+		PrintDebugMessage(std::format("Window has been destroyed: {}", m_object_name));
 	}
 }
 
-void SDLDeleter::operator() (SDL_Renderer* renderer) const
+void SDLDeleter::operator()(SDL_Renderer* renderer) const
 {
 	if (renderer)
-	{
+	{		
 		SDL_DestroyRenderer(renderer);
-		ShowDestroyingDebugMessage("Renderer");
+		PrintDebugMessage(std::format("Renderer has been destroyed: {}", m_object_name));
 	}
 }
 
-void SDLDeleter::operator() (SDL_Texture* texture) const
+void SDLDeleter::operator()(SDL_Texture* texture) const
 {
 	if (texture)
 	{
 		SDL_DestroyTexture(texture);
-		ShowDestroyingDebugMessage("Texture");
+		PrintDebugMessage(std::format("Texture has been destroyed: {}", m_object_name));
 	}
 }
-void SDLDeleter::operator() (SDL_Surface* surface) const
+void SDLDeleter::operator()(SDL_Surface* surface) const
 {
 	if (surface)
 	{
 		SDL_DestroySurface(surface);
-		ShowDestroyingDebugMessage("Surface");
+		PrintDebugMessage(std::format("Surface has been destroyed: {}", m_object_name));
 	}
-}
-
-void SDLDeleter::ShowDestroyingDebugMessage(const std::string& object) const
-{
-	std::clog << std::format("{} has been destroyed: {}", object, m_object_name) << std::endl;
 }
 
 SDLWindowWrapper::SDLWindowWrapper(const std::string& window_name,
@@ -51,8 +51,8 @@ SDLWindowWrapper::SDLWindowWrapper(const std::string& window_name,
 }
 
 SDLRendererWrapper::SDLRendererWrapper(SDL_Window* window, 
-	const char* name, const std::string& object_name)
-	: m_renderer(SDL_CreateRenderer(window, name), SDLDeleter(object_name))
+	const char* rendering_driver_name, const std::string& object_name)
+	: m_renderer(SDL_CreateRenderer(window, rendering_driver_name), SDLDeleter(object_name))
 {
 }
 
@@ -64,4 +64,14 @@ SDL_Window* SDLWindowWrapper::Get()
 SDL_Renderer* SDLRendererWrapper::Get()
 {
 	return m_renderer.get();
+}
+
+void PrintDebugMessage(const std::string& message)
+{
+	std::clog << message << std::endl;	
+}
+
+void PrintErrorMessage(const std::string& message)
+{
+	std::cerr << message << std::endl;
 }
