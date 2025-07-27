@@ -2,16 +2,19 @@
 
 int main()
 {
-    Game game;
-
-    game.Init("SDL_Game", 800, 600, false);
-
-    while (game.Running())
+    try
     {
-        game.HandleEvents();
-        game.Update();
-        game.Render();        
-    }    
+        Game* game = Game::GetInstance("SDL_Game", 800, 600, false);
 
-    game.Clean();
+        while (game->IsRunning())
+        {
+            game->HandleEvents();
+            game->Update();
+            game->Render();
+        }
+    }
+    catch (const std::exception& exception)
+    {
+        PrintErrorMessage(exception.what());
+    }    
 }

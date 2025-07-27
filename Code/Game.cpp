@@ -3,48 +3,42 @@
 #include <iostream>
 #include <format>
 
-
-
-Game::Game()
+Game::Game(const std::string& title, int width, int height, bool is_fullscreen)
     : m_is_running(false)
 {
-}
+    m_SDL_initializator = std::make_unique<SDLResourceInitializationWrapper>();
 
-void Game::Init(const std::string& title, int width, int height, bool is_fullscreen)
-{
-    if (!SDL_Init(SDL_INIT_VIDEO))
+    if (!m_SDL_initializator->IsInitialized())
     {
-        PrintErrorMessage(std::format("SDL_Init Error: {}", SDL_GetError()));
-        return;
+        const std::string message = std::format("SDL_Init Error: {}", SDL_GetError());
+        throw std::invalid_argument(message);
     }
-    PrintDebugMessage("Subsystems has been Initialised!");
-    
+
     const SDL_WindowFlags window_flag = is_fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_RESIZABLE;
     m_window = std::make_unique<SDLWindowWrapper>(title, width, height, window_flag, "Main Window");
     if (!m_window->Get())
     {
-        PrintErrorMessage("Main Window has not been initialisation. Something went wrong");
-        return;
+        throw std::invalid_argument("Main Window has not been initialization. Something went wrong");
     }
-    
+
     m_renderer = std::make_unique<SDLRendererWrapper>(m_window->Get(), nullptr, "Renderer");
     if (!m_renderer->Get())
     {
-        PrintErrorMessage("Renderer has not been initialisation. Something went wrong");
-        return;
+        throw std::invalid_argument("Renderer has not been initialization. Something went wrong");
     }
 
     SDL_SetRenderDrawColor(m_renderer->Get(), 0, 255, 0, 255);
-    m_is_running = true;
 
     std::unique_ptr<SDLSurfaceWrapper> tmp_surface = std::make_unique<SDLSurfaceWrapper>("Assets/Player.png", "Temporary Player Surface");
     if (!tmp_surface->Get())
     {
-        PrintErrorMessage(std::format("Surface has not been initialisation. Error: {}", SDL_GetError()));
-        return;
+        const std::string message = std::format("Surface has not been initialization. Error: {}", SDL_GetError());
+        throw std::invalid_argument(message);
     }
 
     m_player = std::make_unique<SDLTextureWrapper>(m_renderer->Get(), tmp_surface->Get(), "Player Texture");
+
+    m_is_running = true;
 }
 
 void Game::Update()
@@ -58,11 +52,6 @@ void Game::Render()
     SDL_RenderClear(m_renderer->Get());
     SDL_RenderTexture(m_renderer->Get(), m_player->Get(), nullptr, &destR);
     SDL_RenderPresent(m_renderer->Get());
-}
-
-void Game::Clean()
-{
-    SDL_Quit();
 }
 
 void Game::HandleEvents()
@@ -87,7 +76,14 @@ void Game::HandleEvents()
     }
 }
 
-bool Game::Running() const
+bool Game::IsRunning() const
 {
     return m_is_running;
+}
+
+Game* Game::GetInstance(const std::string& title, int width, int height, bool is_fullscreen)
+{
+    static std::unique_ptr<Game> m_unique_instance(new Game(title, width, height, is_fullscreen));
+
+    return m_unique_instance.get();
 }

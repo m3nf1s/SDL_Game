@@ -33,6 +33,18 @@ private:
 	std::unique_ptr<SDL_Window, SDLDeleter> m_window;
 };
 
+class SDLResourceInitializationWrapper
+{
+public:
+	SDLResourceInitializationWrapper();
+	~SDLResourceInitializationWrapper();
+
+	bool IsInitialized() const;
+
+private:
+	bool m_is_initialized = false;
+};
+
 class SDLRendererWrapper
 {
 public:
@@ -66,5 +78,5 @@ private:
 	std::unique_ptr<SDL_Texture, SDLDeleter> m_texture;
 };
 
-void PrintDebugMessage(const std::string& message);
-void PrintErrorMessage(const std::string& message);
+void PrintDebugMessage(std::string_view message);
+void PrintErrorMessage(std::string_view message);

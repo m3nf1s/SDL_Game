@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <format>
+#include <fstream>
 
 SDLDeleter::SDLDeleter(const std::string& object_name)
 	: m_object_name(object_name)
@@ -59,6 +60,11 @@ SDLRendererWrapper::SDLRendererWrapper(SDL_Window* window,
 SDLSurfaceWrapper::SDLSurfaceWrapper(const std::string& path, const std::string& object_name)
 	: m_surface(IMG_Load(path.c_str()), SDLDeleter(object_name))
 {
+	std::ifstream file(path);
+	if (!file.good())
+	{
+		throw std::invalid_argument(std::format("File does not exist: {}", path));
+	}
 }
 
 SDLTextureWrapper::SDLTextureWrapper(SDL_Renderer* renderer, SDL_Surface* surface, const std::string& object_name)
@@ -86,12 +92,33 @@ SDL_Texture* SDLTextureWrapper::Get()
 	return m_texture.get();
 }
 
-void PrintDebugMessage(const std::string& message)
+SDLResourceInitializationWrapper::SDLResourceInitializationWrapper()
+{
+	if (SDL_Init(SDL_INIT_VIDEO))
+	{
+		m_is_initialized = true;
+		PrintDebugMessage("Subsystems has been Initialised!");
+	}	
+}
+
+SDLResourceInitializationWrapper::~SDLResourceInitializationWrapper()
+{
+	SDL_Quit();
+	PrintDebugMessage("Subsystems has been cleared!");
+}
+
+bool SDLResourceInitializationWrapper::IsInitialized() const
+{
+	return m_is_initialized;
+}
+
+void PrintDebugMessage(std::string_view message)
 {
 	std::clog << message << std::endl;	
 }
 
-void PrintErrorMessage(const std::string& message)
+void PrintErrorMessage(std::string_view message)
 {
 	std::cerr << message << std::endl;
 }
+
