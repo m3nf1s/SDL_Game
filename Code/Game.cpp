@@ -45,6 +45,7 @@ void Game::Update()
 {
     destR.h = 64;
     destR.w = 64;
+    ++destR.y;
 }
 
 void Game::Render()
@@ -70,6 +71,10 @@ void Game::HandleEvents()
         {
             m_is_running = false;
         }
+        else if (event.key.key == SDLK_RIGHT)
+        {
+            ++destR.x;
+        }
         break;
     default:
         break;
@@ -86,4 +91,23 @@ Game* Game::GetInstance(const std::string& title, int width, int height, bool is
     static std::unique_ptr<Game> m_unique_instance(new Game(title, width, height, is_fullscreen));
 
     return m_unique_instance.get();
+}
+
+void Game::Run()
+{
+    Uint64 frame_start;
+    int64_t frame_time;
+
+    frame_start = SDL_GetTicks();
+
+    HandleEvents();
+    Update();
+    Render();
+
+    frame_time = SDL_GetTicks() - frame_start;
+
+    if (FRAME_DELAY > frame_time)
+    {
+        SDL_Delay(FRAME_DELAY - frame_time);
+    }
 }

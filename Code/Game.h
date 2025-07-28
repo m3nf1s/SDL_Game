@@ -10,9 +10,7 @@ class Game
 public:
     static Game* GetInstance(const std::string& title, int width, int height, bool is_fullscreen);
     
-    void HandleEvents();
-    void Update();
-    void Render();
+    void Run();
 
     bool IsRunning() const;
     
@@ -24,11 +22,18 @@ public:
 private:
     Game(const std::string& title, int width, int height, bool is_fullscreen);
 
+    void HandleEvents();
+    void Update();
+    void Render();
+
 private:
     std::unique_ptr<SDLResourceInitializationWrapper> m_SDL_initializator;
     std::unique_ptr<SDLWindowWrapper> m_window;
     std::unique_ptr<SDLRendererWrapper> m_renderer;
     std::unique_ptr<SDLTextureWrapper> m_player;
+
+    const int64_t FPS = 60;
+    const int64_t FRAME_DELAY = 1000 / FPS;
 
     bool m_is_running;
 

@@ -8,9 +8,7 @@ int main()
 
         while (game->IsRunning())
         {
-            game->HandleEvents();
-            game->Update();
-            game->Render();
+            game->Run();
         }
     }
     catch (const std::exception& exception)
