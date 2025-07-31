@@ -3,7 +3,9 @@
 #include <iostream>
 #include <format>
 
-Game::Game(const std::string& title, int width, int height, bool is_fullscreen)
+#include "TextureManager.h"
+
+Game::Game(const std::string& title, const int32_t width, const int32_t height, const bool is_fullscreen)
     : m_is_running(false)
 {
     m_SDL_initializator = std::make_unique<SDLResourceInitializationWrapper>();
@@ -29,14 +31,7 @@ Game::Game(const std::string& title, int width, int height, bool is_fullscreen)
 
     SDL_SetRenderDrawColor(m_renderer->Get(), 0, 255, 0, 255);
 
-    std::unique_ptr<SDLSurfaceWrapper> tmp_surface = std::make_unique<SDLSurfaceWrapper>("Assets/Player.png", "Temporary Player Surface");
-    if (!tmp_surface->Get())
-    {
-        const std::string message = std::format("Surface has not been initialization. Error: {}", SDL_GetError());
-        throw std::invalid_argument(message);
-    }
-
-    m_player = std::make_unique<SDLTextureWrapper>(m_renderer->Get(), tmp_surface->Get(), "Player Texture");
+    m_player = TextureManager::LoadTexture("Assets/Player.png", m_renderer->Get(), "Player Texture");
 
     m_is_running = true;
 }
@@ -86,7 +81,8 @@ bool Game::IsRunning() const
     return m_is_running;
 }
 
-Game* Game::GetInstance(const std::string& title, int width, int height, bool is_fullscreen)
+Game* Game::GetInstance(const std::string& title, 
+    const int32_t width, const int32_t height, const bool is_fullscreen)
 {
     static std::unique_ptr<Game> m_unique_instance(new Game(title, width, height, is_fullscreen));
 
@@ -95,8 +91,8 @@ Game* Game::GetInstance(const std::string& title, int width, int height, bool is
 
 void Game::Run()
 {
-    Uint64 frame_start;
-    int64_t frame_time;
+    Uint32 frame_start;
+    int32_t frame_time;
 
     frame_start = SDL_GetTicks();
 

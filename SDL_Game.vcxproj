@@ -142,10 +142,12 @@
     <ClCompile Include="Code\Game.cpp" />
     <ClCompile Include="Code\SDL_Game.cpp" />
     <ClCompile Include="Code\Utility\Utility.cpp" />
+    <ClCompile Include="Code\TextureManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\Game.h" />
     <ClInclude Include="Code\Utility\Utility.h" />
+    <ClInclude Include="Code\TextureManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

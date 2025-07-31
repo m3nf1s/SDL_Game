@@ -45,8 +45,8 @@ void SDLDeleter::operator()(SDL_Surface* surface) const
 }
 
 SDLWindowWrapper::SDLWindowWrapper(const std::string& window_name,
-	int32_t width, int32_t height,
-	SDL_WindowFlags flags, const std::string& object_name)
+	const int32_t width, const int32_t height,
+	const SDL_WindowFlags flags, const std::string& object_name)
 	: m_window(SDL_CreateWindow(window_name.c_str(), width, height, flags), SDLDeleter(object_name))
 {
 }
@@ -60,11 +60,6 @@ SDLRendererWrapper::SDLRendererWrapper(SDL_Window* window,
 SDLSurfaceWrapper::SDLSurfaceWrapper(const std::string& path, const std::string& object_name)
 	: m_surface(IMG_Load(path.c_str()), SDLDeleter(object_name))
 {
-	std::ifstream file(path);
-	if (!file.good())
-	{
-		throw std::invalid_argument(std::format("File does not exist: {}", path));
-	}
 }
 
 SDLTextureWrapper::SDLTextureWrapper(SDL_Renderer* renderer, SDL_Surface* surface, const std::string& object_name)

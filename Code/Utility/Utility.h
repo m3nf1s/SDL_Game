@@ -24,8 +24,8 @@ class SDLWindowWrapper
 {
 public:
 	SDLWindowWrapper(const std::string& window_name, 
-		int32_t width, int32_t height, 
-		SDL_WindowFlags flags, const std::string& object_name);
+		const int32_t width, const int32_t height,
+		const SDL_WindowFlags flags, const std::string& object_name);
 
 	SDL_Window* Get();
 
