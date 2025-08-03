@@ -2,8 +2,10 @@
 
 #include <string>
 #include <memory>
+#include <vector>
 
 #include "Utility/Utility.h"
+#include "GameObject.h"
 
 class Game
 {
@@ -28,14 +30,13 @@ private:
 
 private:
     std::unique_ptr<SDLResourceInitializationWrapper> m_SDL_initializator;
-    std::unique_ptr<SDLWindowWrapper> m_window;
-    std::unique_ptr<SDLRendererWrapper> m_renderer;
-    std::unique_ptr<SDLTextureWrapper> m_player;
+    std::unique_ptr<SDLWindow> m_window;
+    std::shared_ptr<SDLRenderer> m_renderer;
+    
+    std::vector<GameObject> m_game_objects;
 
-    const int32_t FPS = 60;
-    const int32_t FRAME_DELAY = 1000 / FPS;
+    const int64_t FPS = 60;
+    const int64_t FRAME_DELAY = 1000 / FPS;
 
     bool m_is_running;
-
-    SDL_FRect srcR, destR;
 };

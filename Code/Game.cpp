@@ -10,43 +10,36 @@ Game::Game(const std::string& title, const int32_t width, const int32_t height, 
 {
     m_SDL_initializator = std::make_unique<SDLResourceInitializationWrapper>();
 
-    if (!m_SDL_initializator->IsInitialized())
-    {
-        const std::string message = std::format("SDL_Init Error: {}", SDL_GetError());
-        throw std::invalid_argument(message);
-    }
-
     const SDL_WindowFlags window_flag = is_fullscreen ? SDL_WINDOW_FULLSCREEN : SDL_WINDOW_RESIZABLE;
-    m_window = std::make_unique<SDLWindowWrapper>(title, width, height, window_flag, "Main Window");
-    if (!m_window->Get())
-    {
-        throw std::invalid_argument("Main Window has not been initialization. Something went wrong");
-    }
 
-    m_renderer = std::make_unique<SDLRendererWrapper>(m_window->Get(), nullptr, "Renderer");
-    if (!m_renderer->Get())
-    {
-        throw std::invalid_argument("Renderer has not been initialization. Something went wrong");
-    }
+    m_window = std::make_unique<SDLWindow>(title, width, height, window_flag, "Main Window");
+    
+    m_renderer = std::make_shared<SDLRenderer>(m_window, nullptr, "Renderer");
 
     SDL_SetRenderDrawColor(m_renderer->Get(), 0, 255, 0, 255);
 
-    m_player = TextureManager::LoadTexture("Assets/Player.png", m_renderer->Get(), "Player Texture");
+    m_game_objects.push_back(GameObject("Assets/Player.png", m_renderer, "Player Texture"));
 
     m_is_running = true;
 }
 
 void Game::Update()
 {
-    destR.h = 64;
-    destR.w = 64;
-    ++destR.y;
+    for (GameObject& game_object : m_game_objects)
+    {
+        game_object.Update();
+    }
 }
 
 void Game::Render()
 {
     SDL_RenderClear(m_renderer->Get());
-    SDL_RenderTexture(m_renderer->Get(), m_player->Get(), nullptr, &destR);
+
+    for (const GameObject& game_object : m_game_objects)
+    {
+        game_object.Render();    
+    }
+
     SDL_RenderPresent(m_renderer->Get());
 }
 
@@ -68,7 +61,6 @@ void Game::HandleEvents()
         }
         else if (event.key.key == SDLK_RIGHT)
         {
-            ++destR.x;
         }
         break;
     default:
@@ -91,19 +83,16 @@ Game* Game::GetInstance(const std::string& title,
 
 void Game::Run()
 {
-    Uint32 frame_start;
-    int32_t frame_time;
-
-    frame_start = SDL_GetTicks();
+    uint64_t frame_start = SDL_GetTicks();
 
     HandleEvents();
     Update();
     Render();
 
-    frame_time = SDL_GetTicks() - frame_start;
+    int64_t frame_time = SDL_GetTicks() - frame_start;
 
     if (FRAME_DELAY > frame_time)
     {
-        SDL_Delay(FRAME_DELAY - frame_time);
+        SDL_Delay(static_cast<uint32_t>(FRAME_DELAY - frame_time));
     }
 }

@@ -4,6 +4,163 @@
 #include <format>
 #include <fstream>
 
+SDLObject::SDLObject(std::string object_name)
+	: m_object_name(std::move(object_name))
+{
+}
+
+SDLWindow::SDLWindow(const std::string& window_name, const int32_t width, const int32_t height, const SDL_WindowFlags flags, std::string object_name)
+	: SDLObject(std::move(object_name))
+	, m_ptr_window(SDL_CreateWindow(window_name.c_str(), width, height, flags))
+{
+	if (!m_ptr_window)
+	{
+		throw std::runtime_error(GenerateErrorMessage(m_object_name));
+	}
+}
+
+SDLWindow::~SDLWindow()
+{
+	if (m_ptr_window)
+	{
+		SDL_DestroyWindow(m_ptr_window);
+		PrintDebugMessage(GenerateDestructionMessage("Window", m_object_name));
+	}
+}
+
+SDL_Window* SDLWindow::Get() const
+{
+	return m_ptr_window;
+}
+
+SDLRenderer::SDLRenderer(const std::unique_ptr<SDLWindow>& window, const char* rendering_driver_name, std::string object_name)
+	: SDLObject(std::move(object_name))
+	, m_ptr_renderer(SDL_CreateRenderer(window->Get(), rendering_driver_name))
+{
+	if (!m_ptr_renderer)
+	{
+		throw std::runtime_error(GenerateErrorMessage(m_object_name));
+	}
+}
+
+SDLRenderer::~SDLRenderer()
+{
+	if (m_ptr_renderer)
+	{
+		SDL_DestroyRenderer(m_ptr_renderer);
+		PrintDebugMessage(GenerateDestructionMessage("Renderer", m_object_name));
+	}
+}
+
+SDL_Renderer* SDLRenderer::Get()
+{
+	return m_ptr_renderer;
+}
+
+SDL_Renderer* SDLRenderer::Get() const
+{
+	return m_ptr_renderer;
+}
+
+SDLSurface::SDLSurface(const std::string& path, std::string object_name)
+	: SDLObject(std::move(object_name))
+	, m_ptr_surface(IMG_Load(path.c_str()))
+{
+	if (!m_ptr_surface)
+	{
+		throw std::runtime_error(GenerateErrorMessage(m_object_name));
+	}
+}
+
+SDLSurface::~SDLSurface()
+{
+	if (m_ptr_surface)
+	{
+		SDL_DestroySurface(m_ptr_surface);
+		PrintDebugMessage(GenerateDestructionMessage("Surface", m_object_name));
+	}
+}
+
+SDL_Surface* SDLSurface::Get() const
+{
+	return m_ptr_surface;
+}
+
+SDLTexture::SDLTexture(const std::shared_ptr<SDLRenderer>& renderer,
+		const std::unique_ptr<SDLSurface>& surface, std::string object_name)
+	: SDLObject(std::move(object_name))
+	, m_ptr_texture(SDL_CreateTextureFromSurface(renderer->Get(), surface->Get()))
+{
+	if (!m_ptr_texture)
+	{
+		throw std::runtime_error(GenerateErrorMessage(m_object_name));
+	}
+}
+
+SDLTexture::~SDLTexture()
+{
+	if (m_ptr_texture)
+	{
+		SDL_DestroyTexture(m_ptr_texture);
+		PrintDebugMessage(GenerateDestructionMessage("Texture", m_object_name));
+	}
+}
+
+SDL_Texture* SDLTexture::Get() const
+{
+	return m_ptr_texture;
+}
+
+SDLResourceInitializationWrapper::SDLResourceInitializationWrapper()
+{
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS))
+	{
+		m_is_initialized = true;
+		PrintDebugMessage("Subsystems have been Initialized!");
+	}
+	else
+	{
+		throw std::runtime_error(GenerateErrorMessage("SDL_INIT_Subsystem"));
+	}
+}
+
+SDLResourceInitializationWrapper::~SDLResourceInitializationWrapper()
+{
+	SDL_Quit();
+	PrintDebugMessage("Subsystems have been cleared!");
+}
+
+bool SDLResourceInitializationWrapper::IsInitialized() const
+{
+	return m_is_initialized;
+}
+
+void PrintDebugMessage(std::string_view message)
+{
+	std::clog << message << std::endl;
+}
+
+void PrintErrorMessage(std::string_view message)
+{
+	std::cerr << message << std::endl;
+}
+
+std::string GenerateErrorMessage(std::string_view object_name)
+{
+	return std::format("{} has not been initialization. Something went wrong: {}", object_name, SDL_GetError());
+}
+
+std::string GenerateDestructionMessage(std::string_view SDL_object, std::string_view object_name)
+{
+	return std::format("{} has been destroyed: {}", SDL_object, object_name);
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+// 
+// First version of RAII wrappers for SDL Components
+// 
+///////////////////////////////////////////////////////////////////////////////////
+
 SDLDeleter::SDLDeleter(const std::string& object_name)
 	: m_object_name(object_name)
 {
@@ -86,34 +243,3 @@ SDL_Texture* SDLTextureWrapper::Get()
 {
 	return m_texture.get();
 }
-
-SDLResourceInitializationWrapper::SDLResourceInitializationWrapper()
-{
-	if (SDL_Init(SDL_INIT_VIDEO))
-	{
-		m_is_initialized = true;
-		PrintDebugMessage("Subsystems has been Initialised!");
-	}	
-}
-
-SDLResourceInitializationWrapper::~SDLResourceInitializationWrapper()
-{
-	SDL_Quit();
-	PrintDebugMessage("Subsystems has been cleared!");
-}
-
-bool SDLResourceInitializationWrapper::IsInitialized() const
-{
-	return m_is_initialized;
-}
-
-void PrintDebugMessage(std::string_view message)
-{
-	std::clog << message << std::endl;	
-}
-
-void PrintErrorMessage(std::string_view message)
-{
-	std::cerr << message << std::endl;
-}
-
