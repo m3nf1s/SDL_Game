@@ -4,7 +4,7 @@ int main()
 {
     try
     {
-        Game* game = Game::GetInstance("SDL_Game", 800, 600, false);
+        Game* game = Game::GetInstance("SDL_Game", 832, 640, false);
 
         while (game->IsRunning())
         {
@@ -14,5 +14,5 @@ int main()
     catch (const std::exception& exception)
     {
         PrintErrorMessage(exception.what());
-    }    
+    }
 }

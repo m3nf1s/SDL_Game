@@ -97,6 +97,17 @@ SDLTexture::SDLTexture(const std::shared_ptr<SDLRenderer>& renderer,
 	}
 }
 
+SDLTexture::SDLTexture(const std::unique_ptr<SDLRenderer>& renderer,
+		const std::unique_ptr<SDLSurface>& surface, std::string object_name)
+	: SDLObject(std::move(object_name))
+	, m_ptr_texture(SDL_CreateTextureFromSurface(renderer->Get(), surface->Get()))
+{
+	if (!m_ptr_texture)
+	{
+		throw std::runtime_error(GenerateErrorMessage(m_object_name));
+	}
+}
+
 SDLTexture::~SDLTexture()
 {
 	if (m_ptr_texture)

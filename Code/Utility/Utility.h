@@ -61,6 +61,8 @@ class SDLTexture : public SDLObject
 public:
 	SDLTexture(const std::shared_ptr<SDLRenderer>& renderer,
 		const std::unique_ptr<SDLSurface>& surface, std::string object_name);
+	SDLTexture(const std::unique_ptr<SDLRenderer>& renderer,
+		const std::unique_ptr<SDLSurface>& surface, std::string object_name);
 	~SDLTexture() override;
 
 	SDL_Texture* Get() const;
