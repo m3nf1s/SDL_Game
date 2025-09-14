@@ -139,6 +139,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Code\ECS\Components.cpp" />
+    <ClCompile Include="Code\ECS\ECS.cpp" />
     <ClCompile Include="Code\Game.cpp" />
     <ClCompile Include="Code\SDL_Game.cpp" />
     <ClCompile Include="Code\Utility\Utility.cpp" />
@@ -147,6 +149,8 @@
     <ClCompile Include="Code\Map.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\ECS\Components.h" />
+    <ClInclude Include="Code\ECS\ECS.h" />
     <ClInclude Include="Code\Game.h" />
     <ClInclude Include="Code\Utility\Utility.h" />
     <ClInclude Include="Code\TextureManager.h" />

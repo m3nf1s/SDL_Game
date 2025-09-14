@@ -4,8 +4,14 @@
 #include <format>
 
 #include "TextureManager.h"
+#include "ECS/ECS.h"
+#include "ECS/Components.h"
 
 std::unique_ptr<SDLRenderer> Game::m_renderer = nullptr;
+
+Manager manager;
+Entity& newPlayer(manager.AddEntity());
+Entity& newEnemy(manager.AddEntity());
 
 Game::Game(const std::string& title, const int32_t width, const int32_t height, const bool is_fullscreen)
     : m_is_running(false)
@@ -24,6 +30,11 @@ Game::Game(const std::string& title, const int32_t width, const int32_t height, 
 
     m_map = std::make_unique<Map>();
 
+    newPlayer.AddComponent<PositionComponent>();
+    newPlayer.GetComponent<PositionComponent>();
+    newEnemy.AddComponent<PositionComponent>();
+
+
     m_is_running = true;
 }
 
@@ -33,6 +44,10 @@ void Game::Update()
     {
         game_object.Update();
     }
+
+    manager.Update();
+    std::cout << newPlayer.GetComponent<PositionComponent>().GetX()
+       << ',' << newPlayer.GetComponent<PositionComponent>().GetY() << std::endl;
 }
 
 void Game::Render()
