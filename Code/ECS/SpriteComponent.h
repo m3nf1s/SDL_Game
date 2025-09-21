@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ECS.h"
-#include "PositionComponent.h"
+#include "TransformComponent.h"
 #include "../Utility/Utility.h"
 
 class SpriteComponent : public Component
@@ -19,7 +19,7 @@ public:
 	void Draw() override;
 
 private:
-	PositionComponent* m_position;
+	TransformComponent* m_transform;
 	std::unique_ptr<SDLTexture> m_texture;
 	SDL_FRect m_srcRect, m_destRect;
 };

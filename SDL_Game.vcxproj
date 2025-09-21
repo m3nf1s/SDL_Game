@@ -147,7 +147,8 @@
     <ClCompile Include="Code\GameObject.cpp" />
     <ClCompile Include="Code\Map.cpp" />
     <ClCompile Include="Code\ECS\SpriteComponent.cpp" />
-    <ClCompile Include="Code\ECS\PositionComponent.cpp" />
+    <ClCompile Include="Code\ECS\TransformComponent.cpp" />
+    <ClCompile Include="Code\Vector2D.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ECS\ECS.h" />
@@ -157,7 +158,8 @@
     <ClInclude Include="Code\GameObject.h" />
     <ClInclude Include="Code\Map.h" />
     <ClInclude Include="Code\ECS\SpriteComponent.h" />
-    <ClInclude Include="Code\ECS\PositionComponent.h" />
+    <ClInclude Include="Code\ECS\TransformComponent.h" />
+    <ClInclude Include="Code\Vector2D.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Dirt.png" />

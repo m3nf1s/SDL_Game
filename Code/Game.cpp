@@ -4,6 +4,9 @@
 #include <format>
 
 #include "TextureManager.h"
+#include "ECS/TransformComponent.h"
+#include "ECS/SpriteComponent.h"
+#include "Vector2D.h"
 
 std::unique_ptr<SDLRenderer> Game::m_renderer = nullptr;
 
@@ -25,7 +28,7 @@ Game::Game(const std::string& title, const int32_t width, const int32_t height, 
 
     m_map = std::make_unique<Map>();
     
-    newPlayer.AddComponent<PositionComponent>();
+    newPlayer.AddComponent<TransformComponent>();
     newPlayer.AddComponent<SpriteComponent>("Assets/Player.png", "Player Texture");
 
     m_is_running = true;
@@ -35,6 +38,8 @@ void Game::Update()
 {
     manager.Refresh();
     manager.Update();
+
+    newPlayer.GetComponent<TransformComponent>().position += Vector2D(1.0, 1.0);
 }
 
 void Game::Render()

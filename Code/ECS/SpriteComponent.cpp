@@ -14,7 +14,7 @@ void SpriteComponent::SetTexture(const std::string& path, const std::string& obj
 
 void SpriteComponent::Init()
 {
-	m_position = &entity->GetComponent<PositionComponent>();
+	m_transform = &entity->GetComponent<TransformComponent>();
 
 	m_srcRect.x = m_srcRect.y = 0;
 	m_srcRect.w = m_srcRect.h = 64;
@@ -23,8 +23,8 @@ void SpriteComponent::Init()
 
 void SpriteComponent::Update()
 {
-	m_destRect.x = m_position->GetX();
-	m_destRect.y = m_position->GetY();
+	m_destRect.x = m_transform->position.X;
+	m_destRect.y = m_transform->position.Y;
 }
 
 void SpriteComponent::Draw()

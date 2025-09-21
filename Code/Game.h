@@ -5,8 +5,7 @@
 #include <vector>
 
 #include "Utility/Utility.h"
-#include "ECS/PositionComponent.h"
-#include "ECS/SpriteComponent.h"
+#include "ECS/ECS.h"
 #include "Map.h"
 
 class Game

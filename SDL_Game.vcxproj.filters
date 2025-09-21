@@ -39,7 +39,10 @@
     <ClCompile Include="Code\ECS\SpriteComponent.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Code\ECS\PositionComponent.cpp">
+    <ClCompile Include="Code\ECS\TransformComponent.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\Vector2D.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -65,7 +68,10 @@
     <ClInclude Include="Code\ECS\SpriteComponent.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Code\ECS\PositionComponent.h">
+    <ClInclude Include="Code\ECS\TransformComponent.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Code\Vector2D.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
