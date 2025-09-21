@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Code\ECS\Components.cpp" />
     <ClCompile Include="Code\ECS\ECS.cpp" />
     <ClCompile Include="Code\Game.cpp" />
     <ClCompile Include="Code\SDL_Game.cpp" />
@@ -147,15 +146,26 @@
     <ClCompile Include="Code\TextureManager.cpp" />
     <ClCompile Include="Code\GameObject.cpp" />
     <ClCompile Include="Code\Map.cpp" />
+    <ClCompile Include="Code\ECS\SpriteComponent.cpp" />
+    <ClCompile Include="Code\ECS\PositionComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Code\ECS\Components.h" />
     <ClInclude Include="Code\ECS\ECS.h" />
     <ClInclude Include="Code\Game.h" />
     <ClInclude Include="Code\Utility\Utility.h" />
     <ClInclude Include="Code\TextureManager.h" />
     <ClInclude Include="Code\GameObject.h" />
     <ClInclude Include="Code\Map.h" />
+    <ClInclude Include="Code\ECS\SpriteComponent.h" />
+    <ClInclude Include="Code\ECS\PositionComponent.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Dirt.png" />
+    <Image Include="Assets\Grass.png" />
+    <Image Include="Assets\Player.png">
+      <DeploymentContent>false</DeploymentContent>
+    </Image>
+    <Image Include="Assets\Water.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -16,13 +16,16 @@ void Entity::Update()
 {
     for (std::unique_ptr<Component>& component : m_components)
     {
-        component->Update();
-        component->Draw();
+        component->Update();        
     }
 }
 
 void Entity::Draw()
 {
+    for (const std::unique_ptr<Component>& component : m_components)
+    {
+        component->Draw();
+    }    
 }
 
 bool Entity::IsActive() const

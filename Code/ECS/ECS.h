@@ -25,7 +25,7 @@ using ComponentArray = std::array <Component*, MAX_COMPONENTS>;
 class Component
 {
 public:
-    Component() = default;
+    explicit Component() = default;
     virtual ~Component() = default;
 
     virtual void Init();

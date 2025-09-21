@@ -5,7 +5,8 @@
 class PositionComponent : public Component
 {
 public:
-	PositionComponent() = default;
+	explicit PositionComponent() = default;
+	explicit PositionComponent(const float x, const float y);
 	~PositionComponent() override = default;
 
 	float GetX() const;
@@ -15,7 +16,7 @@ public:
 
 	void Init() override;
 	void Update() override;
-	void Draw() override;	
+	void Draw() override;
 
 private:
 	float m_X = 0.0f;

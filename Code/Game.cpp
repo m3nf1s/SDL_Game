@@ -4,14 +4,11 @@
 #include <format>
 
 #include "TextureManager.h"
-#include "ECS/ECS.h"
-#include "ECS/Components.h"
 
 std::unique_ptr<SDLRenderer> Game::m_renderer = nullptr;
 
 Manager manager;
 Entity& newPlayer(manager.AddEntity());
-Entity& newEnemy(manager.AddEntity());
 
 Game::Game(const std::string& title, const int32_t width, const int32_t height, const bool is_fullscreen)
     : m_is_running(false)
@@ -26,28 +23,18 @@ Game::Game(const std::string& title, const int32_t width, const int32_t height, 
 
     SDL_SetRenderDrawColor(m_renderer->Get(), 0, 255, 0, 255);
 
-    m_game_objects.push_back(GameObject("Assets/Player.png", 0.0f, 0.0f, "Player Texture"));
-
     m_map = std::make_unique<Map>();
-
+    
     newPlayer.AddComponent<PositionComponent>();
-    newPlayer.GetComponent<PositionComponent>();
-    newEnemy.AddComponent<PositionComponent>();
-
+    newPlayer.AddComponent<SpriteComponent>("Assets/Player.png", "Player Texture");
 
     m_is_running = true;
 }
 
 void Game::Update()
 {
-    for (GameObject& game_object : m_game_objects)
-    {
-        game_object.Update();
-    }
-
+    manager.Refresh();
     manager.Update();
-    std::cout << newPlayer.GetComponent<PositionComponent>().GetX()
-       << ',' << newPlayer.GetComponent<PositionComponent>().GetY() << std::endl;
 }
 
 void Game::Render()
@@ -55,11 +42,7 @@ void Game::Render()
     SDL_RenderClear(m_renderer->Get());
 
     m_map->RenderMap();
-
-    for (const GameObject& game_object : m_game_objects)
-    {
-        game_object.Render();
-    }
+    manager.Draw();
 
     SDL_RenderPresent(m_renderer->Get());
 }
@@ -127,7 +110,7 @@ const std::unique_ptr<SDLRenderer>& Game::GetRenderer()
 Game::~Game()
 {
     m_map.reset();
-    m_game_objects.clear();
+
     m_renderer.reset();
     m_window.reset();
 }

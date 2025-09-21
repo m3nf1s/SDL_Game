@@ -36,7 +36,10 @@
     <ClCompile Include="Code\ECS\ECS.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="Code\ECS\Components.cpp">
+    <ClCompile Include="Code\ECS\SpriteComponent.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Code\ECS\PositionComponent.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -59,8 +62,25 @@
     <ClInclude Include="Code\ECS\ECS.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="Code\ECS\Components.h">
+    <ClInclude Include="Code\ECS\SpriteComponent.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
+    <ClInclude Include="Code\ECS\PositionComponent.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Player.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Assets\Grass.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Assets\Dirt.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+    <Image Include="Assets\Water.png">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
   </ItemGroup>
 </Project>

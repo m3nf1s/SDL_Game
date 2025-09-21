@@ -5,7 +5,8 @@
 #include <vector>
 
 #include "Utility/Utility.h"
-#include "GameObject.h"
+#include "ECS/PositionComponent.h"
+#include "ECS/SpriteComponent.h"
 #include "Map.h"
 
 class Game
@@ -27,7 +28,7 @@ public:
     static const std::unique_ptr<SDLRenderer>& GetRenderer();
 
 private:
-    Game(const std::string& title, const int32_t width, const int32_t height, const bool is_fullscreen);
+    explicit Game(const std::string& title, const int32_t width, const int32_t height, const bool is_fullscreen);
     ~Game();
 
     void HandleEvents();
@@ -40,7 +41,7 @@ private:
     std::unique_ptr<SDLResourceInitializationWrapper> m_SDL_initializator;
     std::unique_ptr<SDLWindow> m_window;
     
-    std::vector<GameObject> m_game_objects;
+    //std::vector<Entity*> m_game_objects;
 
     std::unique_ptr<Map> m_map;
 

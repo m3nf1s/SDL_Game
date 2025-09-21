@@ -7,7 +7,7 @@
 class Map
 {
 public:
-	Map();
+	explicit Map();
 	~Map() = default;
 
 	void LoadMap(const std::array<std::array<int32_t, 25>, 20>& loaded_map);
