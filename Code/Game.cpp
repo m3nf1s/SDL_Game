@@ -6,9 +6,11 @@
 #include "TextureManager.h"
 #include "ECS/TransformComponent.h"
 #include "ECS/SpriteComponent.h"
+#include "ECS/KeyboardControllerComponent.h"
 #include "Vector2D.h"
 
 std::unique_ptr<SDLRenderer> Game::m_renderer = nullptr;
+SDL_Event Game::m_event;
 
 Manager manager;
 Entity& newPlayer(manager.AddEntity());
@@ -29,6 +31,7 @@ Game::Game(const std::string& title, const int32_t width, const int32_t height, 
     m_map = std::make_unique<Map>();
     
     newPlayer.AddComponent<TransformComponent>();
+    newPlayer.AddComponent<KeyboardControllerComponent>();
     newPlayer.AddComponent<SpriteComponent>("Assets/Player.png", "Player Texture");
 
     m_is_running = true;
@@ -38,8 +41,6 @@ void Game::Update()
 {
     manager.Refresh();
     manager.Update();
-
-    newPlayer.GetComponent<TransformComponent>().position += Vector2D(1.0, 1.0);
 }
 
 void Game::Render()
@@ -54,24 +55,20 @@ void Game::Render()
 
 void Game::HandleEvents()
 {
-    SDL_Event event;
-    SDL_PollEvent(&event);
+    
+    SDL_PollEvent(&m_event);
 
-    switch (event.type)
+    switch (m_event.type)
     {
     case SDL_EVENT_QUIT:
         m_is_running = false;
         break;
 
     case SDL_EVENT_KEY_DOWN:
-        if (event.key.key == SDLK_ESCAPE)
+        if (m_event.key.key == SDLK_ESCAPE)
         {
             m_is_running = false;
         }
-        else if (event.key.key == SDLK_RIGHT)
-        {
-        }
-        break;
     default:
         break;
     }
@@ -109,6 +106,11 @@ void Game::Run()
 const std::unique_ptr<SDLRenderer>& Game::GetRenderer()
 {
     return m_renderer;
+}
+
+const SDL_Event& Game::GetEvent()
+{
+    return m_event;
 }
 
 // TODO: Write a destructor to correctly delete SDL data in the correct order

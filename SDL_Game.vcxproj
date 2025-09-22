@@ -149,6 +149,7 @@
     <ClCompile Include="Code\ECS\SpriteComponent.cpp" />
     <ClCompile Include="Code\ECS\TransformComponent.cpp" />
     <ClCompile Include="Code\Vector2D.cpp" />
+    <ClCompile Include="Code\ECS\KeyboardControllerComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Code\ECS\ECS.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Code\ECS\SpriteComponent.h" />
     <ClInclude Include="Code\ECS\TransformComponent.h" />
     <ClInclude Include="Code\Vector2D.h" />
+    <ClInclude Include="Code\ECS\KeyboardControllerComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Dirt.png" />

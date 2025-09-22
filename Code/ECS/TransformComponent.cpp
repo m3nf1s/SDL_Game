@@ -7,12 +7,14 @@ TransformComponent::TransformComponent(const float x, const float y)
 
 void TransformComponent::Init()
 {
-	position.X = 0.0f;
-	position.Y = 0.0f;
+	velocity.X = 0.0f;
+	velocity.Y = 0.0f;
 }
 
 void TransformComponent::Update()
 {
+	position.X += velocity.X * speed;
+	position.Y += velocity.Y * speed;
 }
 
 void TransformComponent::Draw()

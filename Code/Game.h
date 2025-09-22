@@ -25,6 +25,7 @@ public:
     Game& operator=(Game&&) = delete;
 
     static const std::unique_ptr<SDLRenderer>& GetRenderer();
+    static const SDL_Event& GetEvent();
 
 private:
     explicit Game(const std::string& title, const int32_t width, const int32_t height, const bool is_fullscreen);
@@ -36,6 +37,7 @@ private:
 
 private:
     static std::unique_ptr<SDLRenderer> m_renderer;
+    static SDL_Event m_event;
 
     std::unique_ptr<SDLResourceInitializationWrapper> m_SDL_initializator;
     std::unique_ptr<SDLWindow> m_window;
