@@ -7,10 +7,11 @@
 class KeyboardControllerComponent : public Component
 {
 public:
-	void Init() override;
-	void Update() override;
+    explicit KeyboardControllerComponent() = default;
+
+    void Init() override;
+    void Update() override;
 
 public:
-	TransformComponent* transform;
+    TransformComponent* transform = nullptr;
 };
-

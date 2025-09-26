@@ -7,19 +7,19 @@
 class Map
 {
 public:
-	explicit Map();
-	~Map() = default;
+    explicit Map();
+    ~Map() = default;
 
-	void LoadMap(const std::array<std::array<int32_t, 25>, 20>& loaded_map);
-	void RenderMap();
+    void LoadMap(const std::array<std::array<int32_t, 25>, 20>& loaded_map);
+    void RenderMap();
 
 private:
-	std::unique_ptr<SDLTexture> m_grass;
-	std::unique_ptr<SDLTexture> m_dirt;
-	std::unique_ptr<SDLTexture> m_water;
+    std::unique_ptr<SDLTexture> m_grass;
+    std::unique_ptr<SDLTexture> m_dirt;
+    std::unique_ptr<SDLTexture> m_water;
 
-	SDL_FRect m_source;
-	SDL_FRect m_destination;
+    SDL_FRect m_source;
+    SDL_FRect m_destination;
 
-	std::array<std::array<int32_t, 25>, 20> m_map;
+    std::array<std::array<int32_t, 25>, 20> m_map;
 };

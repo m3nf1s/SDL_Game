@@ -4,30 +4,45 @@
 
 SpriteComponent::SpriteComponent(const std::string& path, const std::string& object_name)
 {
-	SetTexture(path, object_name);
+    SetTexture(path, object_name);
 }
 
 void SpriteComponent::SetTexture(const std::string& path, const std::string& object_name)
 {
-	m_texture = TextureManager::LoadTexture(path, object_name);
+    m_texture = TextureManager::LoadTexture(path, object_name);
 }
 
 void SpriteComponent::Init()
 {
-	m_transform = &entity->GetComponent<TransformComponent>();
+    if (entity)
+    {
+        m_transform = &entity->GetComponent<TransformComponent>();
 
-	m_srcRect.x = m_srcRect.y = 0;
-	m_srcRect.w = m_srcRect.h = 64;
-	m_destRect.w = m_destRect.h = 64;
+        if (m_transform)
+        {
+            m_srcRect.x = m_srcRect.y = 0.0f;
+            m_srcRect.w = m_transform->GetWidth();
+            m_srcRect.h = m_transform->GetHeight();
+        }
+    }
+
 }
 
 void SpriteComponent::Update()
 {
-	m_destRect.x = m_transform->position.X;
-	m_destRect.y = m_transform->position.Y;
+    if (m_transform)
+    {
+        m_destRect.x = m_transform->position.X;
+        m_destRect.y = m_transform->position.Y;
+        m_destRect.w = m_transform->GetWidth() * m_transform->GetScale();
+        m_destRect.h = m_transform->GetHeight() * m_transform->GetScale();
+    }
 }
 
 void SpriteComponent::Draw()
 {
-	TextureManager::Draw(m_texture, m_srcRect, m_destRect);
+    if (m_texture)
+    {
+        TextureManager::Draw(m_texture, m_srcRect, m_destRect);
+    }
 }

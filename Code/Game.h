@@ -34,6 +34,7 @@ private:
     void HandleEvents();
     void Update();
     void Render();
+    void InitGameObjects();
 
 private:
     static std::unique_ptr<SDLRenderer> m_renderer;
@@ -42,8 +43,8 @@ private:
     std::unique_ptr<SDLResourceInitializationWrapper> m_SDL_initializator;
     std::unique_ptr<SDLWindow> m_window;
     
+    //std::unique_ptr<Manager> m_manager;
     //std::vector<Entity*> m_game_objects;
-
     std::unique_ptr<Map> m_map;
 
     const int64_t FPS = 60;

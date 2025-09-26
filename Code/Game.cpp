@@ -7,13 +7,19 @@
 #include "ECS/TransformComponent.h"
 #include "ECS/SpriteComponent.h"
 #include "ECS/KeyboardControllerComponent.h"
+#include "ECS/ColliderComponent.h"
 #include "Vector2D.h"
+#include "Collision.h"
 
 std::unique_ptr<SDLRenderer> Game::m_renderer = nullptr;
 SDL_Event Game::m_event;
 
-Manager manager;
-Entity& newPlayer(manager.AddEntity());
+namespace
+{
+    std::unique_ptr<Manager> manager = std::make_unique<Manager>();
+    Entity& newPlayer = manager->AddEntity();
+    Entity& wall = manager->AddEntity();
+}
 
 Game::Game(const std::string& title, const int32_t width, const int32_t height, const bool is_fullscreen)
     : m_is_running(false)
@@ -28,19 +34,24 @@ Game::Game(const std::string& title, const int32_t width, const int32_t height, 
 
     SDL_SetRenderDrawColor(m_renderer->Get(), 0, 255, 0, 255);
 
-    m_map = std::make_unique<Map>();
-    
-    newPlayer.AddComponent<TransformComponent>();
-    newPlayer.AddComponent<KeyboardControllerComponent>();
-    newPlayer.AddComponent<SpriteComponent>("Assets/Player.png", "Player Texture");
+    m_map = std::make_unique<Map>();    
+
+    InitGameObjects();
 
     m_is_running = true;
 }
 
 void Game::Update()
 {
-    manager.Refresh();
-    manager.Update();
+    manager->Refresh();
+    manager->Update();
+
+    if (Collision::AABB(newPlayer.GetComponent<ColliderComponent>().GetCollider(), 
+        wall.GetComponent<ColliderComponent>().GetCollider()))
+    {
+        newPlayer.GetComponent<TransformComponent>().GetScale() = 2.5f;
+        std::clog << "Wall hit!" << std::endl;
+    }
 }
 
 void Game::Render()
@@ -48,14 +59,25 @@ void Game::Render()
     SDL_RenderClear(m_renderer->Get());
 
     m_map->RenderMap();
-    manager.Draw();
+    manager->Draw();
 
     SDL_RenderPresent(m_renderer->Get());
 }
 
-void Game::HandleEvents()
+void Game::InitGameObjects()
 {
-    
+    newPlayer.AddComponent<TransformComponent>();
+    newPlayer.AddComponent<SpriteComponent>("Assets/Player.png", "Player Texture");
+    newPlayer.AddComponent<KeyboardControllerComponent>();
+    newPlayer.AddComponent<ColliderComponent>("Player");
+
+    wall.AddComponent<TransformComponent>(300.0f, 300.0f, 300.0f, 30.0f, 1.0f);
+    wall.AddComponent<SpriteComponent>("Assets/Water.png", "Wall");
+    wall.AddComponent<ColliderComponent>("Wall");
+}
+
+void Game::HandleEvents()
+{    
     SDL_PollEvent(&m_event);
 
     switch (m_event.type)
@@ -69,6 +91,7 @@ void Game::HandleEvents()
         {
             m_is_running = false;
         }
+        break;
     default:
         break;
     }

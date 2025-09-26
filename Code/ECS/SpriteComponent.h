@@ -7,20 +7,19 @@
 class SpriteComponent : public Component
 {
 public:
-	explicit SpriteComponent() = default;
-	~SpriteComponent() override = default;
+    explicit SpriteComponent() = default;
+    ~SpriteComponent() override = default;
 
-	SpriteComponent(const std::string& path, const std::string& object_name);
+    SpriteComponent(const std::string& path, const std::string& object_name);
 
-	void SetTexture(const std::string& path, const std::string& object_name);
+    void SetTexture(const std::string& path, const std::string& object_name);
 
-	void Init() override;
-	void Update() override;
-	void Draw() override;
+    void Init() override;
+    void Update() override;
+    void Draw() override;
 
 private:
-	TransformComponent* m_transform;
-	std::unique_ptr<SDLTexture> m_texture;
-	SDL_FRect m_srcRect, m_destRect;
+    TransformComponent* m_transform = nullptr;
+    std::unique_ptr<SDLTexture> m_texture;
+    SDL_FRect m_srcRect, m_destRect;
 };
-

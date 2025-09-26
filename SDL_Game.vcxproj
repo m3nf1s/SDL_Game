@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Code\ECS\ColliderComponent.cpp" />
     <ClCompile Include="Code\ECS\ECS.cpp" />
     <ClCompile Include="Code\Game.cpp" />
     <ClCompile Include="Code\SDL_Game.cpp" />
@@ -150,8 +151,10 @@
     <ClCompile Include="Code\ECS\TransformComponent.cpp" />
     <ClCompile Include="Code\Vector2D.cpp" />
     <ClCompile Include="Code\ECS\KeyboardControllerComponent.cpp" />
+    <ClCompile Include="Code\Collision.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Code\ECS\ColliderComponent.h" />
     <ClInclude Include="Code\ECS\ECS.h" />
     <ClInclude Include="Code\Game.h" />
     <ClInclude Include="Code\Utility\Utility.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="Code\ECS\TransformComponent.h" />
     <ClInclude Include="Code\Vector2D.h" />
     <ClInclude Include="Code\ECS\KeyboardControllerComponent.h" />
+    <ClInclude Include="Code\Collision.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Assets\Dirt.png" />
